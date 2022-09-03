@@ -6,3 +6,6 @@ spring:
     banner-mode: off
   application:
     name: tmf
+  jpa:
+    hibernate:
+      ddl-auto: none
