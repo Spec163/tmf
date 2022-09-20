@@ -1,7 +1,9 @@
 package org.edu.tmf.tmf.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
@@ -18,6 +20,8 @@ import java.util.List;
 @Entity
 @Table(name = "ri_reservation")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
 public class RIReservationEntity {
