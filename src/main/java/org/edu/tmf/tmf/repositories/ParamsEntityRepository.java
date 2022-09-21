@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ParamsEntityRepositories extends JpaRepository<ParamsEntity, Long> {
+public interface ParamsEntityRepository extends JpaRepository<ParamsEntity, Long> {
+
+    ParamsEntity findParamsEntityByObjectIdAndAndAttrId(Long objectId, Long attrId);
 }

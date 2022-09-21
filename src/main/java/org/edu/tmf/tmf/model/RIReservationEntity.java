@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.edu.tmf.tmf.model.enums.ReservationStatesEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,4 +39,8 @@ public class RIReservationEntity {
             inverseJoinColumns = @JoinColumn(name = "object_id")
     )
     private List<ObjectsEntity> items = new ArrayList<>();
+
+    public void addItem(ObjectsEntity objectsEntity) {
+        this.items.add(objectsEntity);
+    }
 }

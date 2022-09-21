@@ -12,10 +12,14 @@ public interface ObjectsEntityRepository extends JpaRepository<ObjectsEntity, Lo
 
 
     @Query(
-        value = "select * from objects o " +
+        value = "select o.name from objects o " +
                 "where o.object_type_id = ?1 and o.object_id in " +
                 "(select p.object_id from params p where p.attr_id = 505 and p.list_value_id = 81) limit ?2",
         nativeQuery = true
     )
-    List<ObjectsEntity> getResourcesByTypeAndQuantity(Long objectTypeId, Integer quantity);
+    List<String> getResourcesByTypeAndQuantity(Long objectTypeId, Integer quantity);
+
+    ObjectsEntity findObjectsEntityByParentIdAndAndName(Long parentId, String name);
+
+    ObjectsEntity findObjectsEntityByObjectId(Long objectId);
 }
