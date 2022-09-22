@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.edu.tmf.tmf.model.enums.ReservationStatesEnum;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class RIReservationEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long reservationId;
 
-    private ReservationStatesEnum state;
+    private String state;
 
     @ManyToMany
     @JoinTable(

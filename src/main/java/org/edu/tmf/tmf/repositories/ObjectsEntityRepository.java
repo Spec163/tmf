@@ -19,7 +19,7 @@ public interface ObjectsEntityRepository extends JpaRepository<ObjectsEntity, Lo
     )
     List<String> getResourcesByTypeAndQuantity(Long objectTypeId, Integer quantity);
 
-    ObjectsEntity findObjectsEntityByParentIdAndAndName(Long parentId, String name);
+    ObjectsEntity findObjectsEntityByParentIdAndObjectTypeIdAndName(Long parentId, Long objectTypeId, String name);
 
     ObjectsEntity findObjectsEntityByObjectId(Long objectId);
 }
