@@ -45,7 +45,7 @@ public class ResourceController { //todo: add argument validation!
     @PatchMapping("/{id}")
     public ResponseEntity<Long> changeReservationState(
             @PathVariable("id") final Long reservationId,
-            @RequestBody final PatchReservationState state // it works?
+            @RequestBody final PatchReservationState state
     ) {
         return ResponseEntity.ok(this.resourceService.changeReservationState(reservationId, state));
     }
