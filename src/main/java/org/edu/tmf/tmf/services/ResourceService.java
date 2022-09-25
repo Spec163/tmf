@@ -6,6 +6,7 @@ import org.edu.tmf.tmf.dto.ReservationDTO;
 import org.edu.tmf.tmf.dto.ReservationRequest;
 import org.edu.tmf.tmf.dto.ReservationResponse;
 import org.edu.tmf.tmf.exceptions.ChangeResourceReservationException;
+import org.edu.tmf.tmf.exceptions.GetResourceException;
 import org.edu.tmf.tmf.exceptions.ReservationException;
 import org.edu.tmf.tmf.model.ObjectsEntity;
 import org.edu.tmf.tmf.model.ParamsEntity;
@@ -42,7 +43,11 @@ public class ResourceService {
     }
 
     public List<String> getResourcesByTMF639(final Long objectTypeId, final Integer quantity) {
-        return objectsEntityRepository.getResourcesByTypeAndQuantity(objectTypeId, quantity);
+        try {
+            return objectsEntityRepository.getResourcesByTypeAndQuantity(objectTypeId, quantity);
+        } catch (Exception e) {
+            throw new GetResourceException(objectTypeId, e.getCause());
+        }
     }
 
     private ObjectsEntity checkResource(final ReservationDTO reservationDTO) {

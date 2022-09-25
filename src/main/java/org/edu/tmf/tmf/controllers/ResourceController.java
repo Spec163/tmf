@@ -1,5 +1,13 @@
 package org.edu.tmf.tmf.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.edu.tmf.tmf.dto.PatchReservationState;
 import org.edu.tmf.tmf.dto.ReservationRequest;
 import org.edu.tmf.tmf.dto.ReservationResponse;
@@ -15,10 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/resource")
+@Tag(name = "TMF API")
 public class ResourceController { //todo: add argument validation!
 
     private final ResourceService resourceService;
@@ -30,9 +37,21 @@ public class ResourceController { //todo: add argument validation!
 
 
     @GetMapping
+    @Operation(
+        summary = "Get Resources by TMF639",
+        description = "Returns resources by object types",
+        method = "GET")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found the resources",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservationResponse.class)) }),
+        @ApiResponse(responseCode = "400", description = "Incorrect object type Id",
+            content = @Content) })
     public List<String> getResources(
-            @RequestParam("type") final Long type,
-            @RequestParam("quantity") final Integer quantity
+        @Parameter(name = "type", description = "Object type of resource", required = true)
+        @RequestParam("type") final Long type,
+        @Parameter(name = "quantity", description = "Number of resource", required = true)
+        @RequestParam("quantity") final Integer quantity
     ) {
         return resourceService.getResourcesByTMF639(type, quantity);
     }
@@ -44,8 +63,8 @@ public class ResourceController { //todo: add argument validation!
 
     @PatchMapping("/{id}")
     public ResponseEntity<Long> changeReservationState(
-            @PathVariable("id") final Long reservationId,
-            @RequestBody final PatchReservationState state
+        @PathVariable("id") final Long reservationId,
+        @RequestBody final PatchReservationState state
     ) {
         return ResponseEntity.ok(this.resourceService.changeReservationState(reservationId, state.getReservationState()));
     }
