@@ -2,7 +2,6 @@ package org.edu.tmf.tmf.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.edu.tmf.tmf.constants.RIConstants;
-import org.edu.tmf.tmf.dto.PatchReservationState;
 import org.edu.tmf.tmf.dto.ReservationDTO;
 import org.edu.tmf.tmf.dto.ReservationRequest;
 import org.edu.tmf.tmf.dto.ReservationResponse;
@@ -16,8 +15,10 @@ import org.edu.tmf.tmf.repositories.ObjectsEntityRepository;
 import org.edu.tmf.tmf.repositories.ParamsEntityRepository;
 import org.edu.tmf.tmf.repositories.RIReservationEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -79,6 +80,7 @@ public class ResourceService {
                     log.debug("Object {} added to reservation.", object);
                 });
         riReservationEntity.setState(ReservationStatesEnum.IN_PROGRESS.getValue());
+        riReservationEntity.setCreationDate(new Date());
         riReservationEntityRepository.save(riReservationEntity);
         response.setReservationId(riReservationEntity.getReservationId());
 
@@ -89,8 +91,12 @@ public class ResourceService {
 
         return response;
     }
+////todo: added change reservation items???
+//    public ReservationResponse changeReservationItems(final Long reservationId, ) {
+//
+//    }
 
-    public Long changeReservationState(final Long reservationId, final PatchReservationState state) {
+    public Long changeReservationState(final Long reservationId, final ReservationStatesEnum state) {
         final RIReservationEntity riReservationEntity = riReservationEntityRepository
                 .findById(reservationId)
                 .orElseThrow(() -> new ChangeResourceReservationException(reservationId));
@@ -99,16 +105,31 @@ public class ResourceService {
             throw new ChangeResourceReservationException();
         }
 
-        riReservationEntity.setState(state.getReservationState().getValue());
+        riReservationEntity.setState(state.getValue());
         riReservationEntityRepository.save(riReservationEntity);
         riReservationEntity
                 .getItems()
                 .forEach(resource -> changeParamListValue(
                         resource.getObjectId(),
                         RIConstants.STATUS_ATTR_ID,
-                        state.getReservationState() == ReservationStatesEnum.COMPLETED ?
+                        state == ReservationStatesEnum.COMPLETED ?
                                 RIConstants.IN_USE_LIST_VALUE_ID : RIConstants.AVAILABLE_LIST_VALUE_ID)
                 );
         return reservationId;
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void releaseOldReservations() {
+        final List<RIReservationEntity> oldReservations =
+                this.riReservationEntityRepository.findRIReservationEntitiesByStateAndCreationDateBefore(
+                        ReservationStatesEnum.IN_PROGRESS.getValue(),
+                        new Date(System.currentTimeMillis() - 3600 * 1000)
+                );
+        if (oldReservations.isEmpty()) {
+            log.info("Old reservations not found!");
+        } else {
+            log.info("Old reservations: {}", oldReservations.toString());
+            oldReservations.forEach(r -> this.changeReservationState(r.getReservationId(), ReservationStatesEnum.CANCELLED));
+        }
     }
 }

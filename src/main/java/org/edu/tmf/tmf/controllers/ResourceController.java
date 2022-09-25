@@ -47,6 +47,6 @@ public class ResourceController { //todo: add argument validation!
             @PathVariable("id") final Long reservationId,
             @RequestBody final PatchReservationState state
     ) {
-        return ResponseEntity.ok(this.resourceService.changeReservationState(reservationId, state));
+        return ResponseEntity.ok(this.resourceService.changeReservationState(reservationId, state.getReservationState()));
     }
 }
