@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.edu.tmf.tmf.dto.PatchReservationState;
 import org.edu.tmf.tmf.dto.ReservationRequest;
 import org.edu.tmf.tmf.dto.ReservationResponse;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/resource")
@@ -57,11 +58,33 @@ public class ResourceController { //todo: add argument validation!
     }
 
     @PostMapping(value = "/reservation")
-    public ResponseEntity<ReservationResponse> reserveResource(@RequestBody final ReservationRequest reservationRequest) {
+    @Operation(
+            summary = "Reserve Resources by TMF641",
+            description = "Returns reservation response with reservation info",
+            method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Resource Reservation  has been created and moved to IN_PROGRESS state",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReservationResponse.class)) }),
+            @ApiResponse(responseCode = "400", description = "Incorrect input data or resource state",
+                    content = @Content) })
+    public ResponseEntity<ReservationResponse> reserveResource(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource type, pool, name", required = true, content = @Content)
+            @RequestBody final ReservationRequest reservationRequest
+    ) {
         return ResponseEntity.ok(this.resourceService.reserveResourceByTMF641(reservationRequest));
     }
 
     @PatchMapping("/{id}")
+    @Operation(
+            summary = "Change reservation state",
+            method = "PATCH")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Resource Reservation  has been created and moved to IN_PROGRESS state",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Long.class)) }),
+            @ApiResponse(responseCode = "400", description = "Incorrect reservation state",
+                    content = @Content) })
     public ResponseEntity<Long> changeReservationState(
         @PathVariable("id") final Long reservationId,
         @RequestBody final PatchReservationState state
