@@ -16,12 +16,12 @@ import org.edu.tmf.tmf.repositories.ObjectsEntityRepository;
 import org.edu.tmf.tmf.repositories.ParamsEntityRepository;
 import org.edu.tmf.tmf.repositories.RIReservationEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
-@Repository
+@Service
 public class ResourceService {
 
 
