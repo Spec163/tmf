@@ -119,7 +119,7 @@ public class ResourceService {
     }
 
     @Scheduled(fixedRate = 60000)
-    public void releaseOldReservations() {
+    public void releaseOldReservationsByBackgroundJob() {
         final List<RIReservationEntity> oldReservations =
                 this.riReservationEntityRepository.findRIReservationEntitiesByStateAndCreationDateBefore(
                         ReservationStatesEnum.IN_PROGRESS.getValue(),
