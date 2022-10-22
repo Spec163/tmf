@@ -2,7 +2,7 @@ package org.edu.tmf.tmf.dto;
 
 import lombok.Data;
 import lombok.ToString;
-import org.edu.tmf.tmf.model.enums.ResourceTypesEnum;
+import org.edu.tmf.tmf.entities.enums.ResourceTypesEnum;
 
 @Data
 @ToString

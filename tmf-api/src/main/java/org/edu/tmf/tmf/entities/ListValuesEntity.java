@@ -1,4 +1,4 @@
-package org.edu.tmf.tmf.model;
+package org.edu.tmf.tmf.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

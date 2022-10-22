@@ -1,6 +1,6 @@
 package org.edu.tmf.tmf.repositories;
 
-import org.edu.tmf.tmf.model.ObjectsEntity;
+import org.edu.tmf.tmf.entities.ObjectsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

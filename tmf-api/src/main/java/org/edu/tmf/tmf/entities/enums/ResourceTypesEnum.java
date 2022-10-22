@@ -1,4 +1,4 @@
-package org.edu.tmf.tmf.model.enums;
+package org.edu.tmf.tmf.entities.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

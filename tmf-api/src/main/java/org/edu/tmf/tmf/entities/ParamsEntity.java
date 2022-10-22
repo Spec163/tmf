@@ -1,4 +1,4 @@
-package org.edu.tmf.tmf.model;
+package org.edu.tmf.tmf.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,25 +14,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "objects")
+@Table(name = "params")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @ToString
-public class ObjectsEntity {
+public class ParamsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "object_id")
+    @Column(name = "param_id")
+    private Long paramId;
+
+    @Column(name = "object_id", nullable = false)
     private Long objectId;
+    @Column(name = "attr_id", nullable = false)
+    private Long attrId;
+    @Column(name = "list_value_id", nullable = false)
+    private Long listValueId;
+    @Column(name = "text")
+    private String text;
 
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "object_type_id", nullable = false)
-    private Long objectTypeId;
-
-    @Column(name = "name", nullable = false)
-    private String name;
 }
