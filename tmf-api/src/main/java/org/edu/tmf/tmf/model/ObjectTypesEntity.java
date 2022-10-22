@@ -1,7 +1,9 @@
 package org.edu.tmf.tmf.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -14,6 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table(name = "object_types")
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 public class ObjectTypesEntity {
